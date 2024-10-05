@@ -1,0 +1,68 @@
+body {
+    background-color: #1a1a2e;
+    color: #ffffff;
+    font-family: 'Press Start 2P', cursive;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.container {
+    text-align: center;
+}
+
+.game-title {
+    font-size: 48px;
+    margin-bottom: 20px;
+    text-shadow: 0 0 10px #16213e;
+}
+
+.game-area {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+}
+
+#canvasMap {
+    background-color: #0f3460;
+    border: 4px solid #16213e;
+    box-shadow: 0 0 20px rgba(22, 33, 62, 0.5);
+}
+
+.info-panel {
+    background-color: #16213e;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(22, 33, 62, 0.5);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    width: 200px;
+}
+
+.score-box, .speed-box {
+    margin-bottom: 20px;
+}
+
+h2 {
+    font-size: 18px;
+    margin-bottom: 10px;
+    color: #e94560;
+}
+
+#score, #speed {
+    font-size: 24px;
+    color: #ffffff;
+}
+
+.controls {
+    text-align: left;
+}
+
+.controls p {
+    font-size: 12px;
+    margin: 5px 0;
+}

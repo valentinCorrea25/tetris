@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tetris Game</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="game.css">
+</head>
+<body>
+    <div class="container">
+        <h1 class="game-title">TETRIS</h1>
+        <div class="game-area">
+            <canvas id="canvasMap" width="300" height="600"></canvas>
+            <div class="info-panel">
+                <div class="score-box">
+                    <h2>SCORE</h2>
+                    <span id="score">0</span>
+                </div>
+                <div class="speed-box">
+                    <h2>SPEED</h2>
+                    <span id="speed">1</span>
+                </div>
+                <div class="controls">
+                    <h2>CONTROLS</h2>
+                    <p>← → : Move</p>
+                    <p>↑ : Rotate</p>
+                    <p>↓ : Soft Drop</p>
+                    <p>Space : Hard Drop</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="./TetrisStyling.js"></script>
+    <script src="./game.js"></script>
+</body>
+</html>
