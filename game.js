@@ -9,24 +9,24 @@ const DECREASING_OF_TIME_PERCENT = 0.15;
 const INITIAL_DIFFICULT = [700, 500, 300];
 
 const TETROMINOES = {
-    square: [[1,1], 
-             [1,1]],
-    snake: [[0,1,1], 
-            [1,1,0]],
-    snakeInverse: [[1,1,0],
-                   [0,1,1]],
+    square: [[1, 1],
+    [1, 1]],
+    snake: [[0, 1, 1],
+    [1, 1, 0]],
+    snakeInverse: [[1, 1, 0],
+    [0, 1, 1]],
     stick: [[1],
-            [1],
-            [1],
-            [1]],
-    elle: [[1,0],
-           [1,0],
-           [1,1]],
-    elleInverse: [[0,1],
-                  [0,1],
-                  [1,1]],
-    tee: [[0,1,0],
-          [1,1,1]]
+    [1],
+    [1],
+    [1]],
+    elle: [[1, 0],
+    [1, 0],
+    [1, 1]],
+    elleInverse: [[0, 1],
+    [0, 1],
+    [1, 1]],
+    tee: [[0, 1, 0],
+    [1, 1, 1]]
 };
 
 let board = Array(BOARD_HEIGHT).fill().map(() => Array(BOARD_WIDTH).fill(0));
@@ -38,10 +38,10 @@ let score = 0;
 let move_game_speed = BASE_MOVE_GAME_SPEED;
 
 function createNewPiece() {
-    const shapes = Object.keys(TETROMINOES); 
+    const shapes = Object.keys(TETROMINOES);
     const randomShapeName = shapes[Math.floor(Math.random() * shapes.length)];
-    currentPiece = TETROMINOES[randomShapeName]; 
-    currentPieceName = randomShapeName; 
+    currentPiece = TETROMINOES[randomShapeName];
+    currentPieceName = randomShapeName;
     currentPiecePosition = { x: Math.floor(BOARD_WIDTH / 2) - 1, y: 0 };
 }
 
@@ -51,7 +51,7 @@ function drawBoard(ctx) {
         for (let x = 0; x < BOARD_WIDTH; x++) {
             if (board[y][x]) {
                 ctx.fillStyle = board[y][x] === 2 ? 'grey' : "null";
-                ctx.strokeStyle = '#333'; 
+                ctx.strokeStyle = '#333';
                 ctx.lineWidth = 1;
                 ctx.fillRect(x * BLOCK_SIZE, y * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
                 ctx.strokeRect(x * BLOCK_SIZE, y * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
@@ -60,10 +60,10 @@ function drawBoard(ctx) {
     }
 }
 
-function setStyle(ctx){
+function setStyle(ctx) {
     const pieceStyles = tetrisPiecesStyling(currentPieceName);
     ctx.fillStyle = pieceStyles.fill;
-    ctx.strokeStyle = pieceStyles.stroke; 
+    ctx.strokeStyle = pieceStyles.stroke;
     ctx.lineWidth = pieceStyles.strokeWidth;
 }
 
@@ -74,10 +74,10 @@ function drawPiece(ctx) {
             if (currentPiece[y][x]) {
                 const blockX = (currentPiecePosition.x + x) * BLOCK_SIZE;
                 const blockY = (currentPiecePosition.y + y) * BLOCK_SIZE;
-                
+
                 // Dibuja el relleno
                 ctx.fillRect(blockX, blockY, BLOCK_SIZE, BLOCK_SIZE);
-                
+
                 // Dibuja el contorno
                 ctx.strokeRect(blockX, blockY, BLOCK_SIZE, BLOCK_SIZE);
             }
@@ -99,6 +99,39 @@ function isValidMove(piece, position) {
     }
     return true;
 }
+// SOUND FX
+function playSoundMovement() {
+    const movementSound = document.getElementById('movement');
+    movementSound.currentTime = 0;
+    movementSound.play();
+}
+function playSoundHardDrop() {
+    const harddrop = document.getElementById('harddrop');
+    harddrop.currentTime = 0;
+    harddrop.play();
+}
+function playSoundLineCompleted(amountOfLines) {
+    if (amountOfLines != 0) {
+        let lineCompleted;
+        if (amountOfLines == 1) {
+            lineCompleted = document.getElementById('lineCompleted');
+        }
+        else if (amountOfLines == 2) {
+            lineCompleted = document.getElementById('lineCompleted2');
+        }
+        else if (amountOfLines == 3) {
+            lineCompleted = document.getElementById('lineCompleted3');
+        }
+        else if (amountOfLines == 4) {
+            lineCompleted = document.getElementById('lineCompleted4');
+        }
+        lineCompleted.currentTime = 0;
+        lineCompleted.play();
+    }
+}
+
+
+
 
 function movePiece(dx, dy) {
     const newPosition = { x: currentPiecePosition.x + dx, y: currentPiecePosition.y + dy };
@@ -109,10 +142,10 @@ function movePiece(dx, dy) {
     return false;
 }
 
-function movePiceAllDown(){
-    for(i=0; i<20; i++){
-        const result = movePiece(0,1);
-        if(!result){
+function movePiceAllDown() {
+    for (i = 0; i < 20; i++) {
+        const result = movePiece(0, 1);
+        if (!result) {
             break;
         }
     }
@@ -124,7 +157,7 @@ function rotatePiece() {
     const rotated = currentPiece[0].map((_, index) =>
         currentPiece.map(row => row[index]).reverse()
     );
-    if (isValidMove(rotated, currentPiecePosition)) {   
+    if (isValidMove(rotated, currentPiecePosition)) {
         currentPiece = rotated;
     }
 }
@@ -139,15 +172,15 @@ function mergePiece() {
     }
 }
 
-function incrementScore(linesCompleted){
-    if(linesCompleted != 1){
-        score = score + ((100*linesCompleted)*1.5);
-    }else{
+function incrementScore(linesCompleted) {
+    if (linesCompleted != 1) {
+        score = score + ((100 * linesCompleted) * 1.5);
+    } else {
         score = score + 100;
     }
 }
 
-function checkSpeedMoveGameSpeed(){
+function checkSpeedMoveGameSpeed() {
     move_game_speed = BASE_MOVE_GAME_SPEED - DECREASING_OF_TIME_PERCENT * (score - 100);
 }
 
@@ -158,13 +191,14 @@ function clearLines() {
             board.splice(y, 1);
             board.unshift(Array(BOARD_WIDTH).fill(0));
             amountOfLinesCompleted++
-            y++; 
+            y++;
         }
     }
+    playSoundLineCompleted(amountOfLinesCompleted);
     incrementScore(amountOfLinesCompleted);
 }
 
-function updateLogs(){
+function updateLogs() {
     document.getElementById('score').innerText = score
     document.getElementById('speed').innerText = move_game_speed
 }
@@ -172,7 +206,7 @@ function updateLogs(){
 function gameLoop(timestamp) {
     const canvas = document.getElementById("canvasMap");
     const ctx = canvas.getContext("2d");
-    
+
     if (!currentPiece) {
         createNewPiece();
     }
@@ -193,7 +227,7 @@ function gameLoop(timestamp) {
     drawBoard(ctx);
     drawPiece(ctx);
     checkSpeedMoveGameSpeed();
-    
+
     // Solicitar la siguiente actualización del ciclo del juego
     setTimeout(() => {
         requestAnimationFrame(gameLoop);
@@ -203,13 +237,13 @@ function gameLoop(timestamp) {
 // Iniciar el ciclo del juego
 requestAnimationFrame(gameLoop);
 
-document.addEventListener('keydown', (event) => {    
-    switch(event.key) {
-        case 'ArrowLeft': movePiece(-1, 0); break;
-        case 'ArrowRight': movePiece(1, 0); break;
-        case 'ArrowDown': movePiece(0, 1); break;
-        case 'ArrowUp': rotatePiece(); break;
-        case ' ': movePiceAllDown(); break; // es la barra espaciadora CUALQUIERAAAAAA
+document.addEventListener('keydown', (event) => {
+    switch (event.key) {
+        case 'ArrowLeft': movePiece(-1, 0); playSoundMovement(); break;
+        case 'ArrowRight': movePiece(1, 0); playSoundMovement(); break;
+        case 'ArrowDown': movePiece(0, 1); playSoundMovement(); break;
+        case 'ArrowUp': rotatePiece(); playSoundMovement(); break;
+        case ' ': movePiceAllDown(); playSoundHardDrop(); break; // es la barra espaciadora CUALQUIERAAAAAA
     }
 });
 
