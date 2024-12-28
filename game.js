@@ -6,6 +6,8 @@ const BASE_MOVE_GAME_SPEED = 800;
 const REFRESH_RATE = 50; // no hace nada
 const DECREASING_OF_TIME_PERCENT = 0.15;
 
+let sound_volume = 0.05;
+
 const INITIAL_DIFFICULT = [700, 500, 300];
 
 const TETROMINOES = {
@@ -29,13 +31,32 @@ const TETROMINOES = {
     [1, 1, 1]]
 };
 
-let board = Array(BOARD_HEIGHT).fill().map(() => Array(BOARD_WIDTH).fill(0));
+let board = initializeBoard();
 let currentPiece = null;
 let currentPiecePosition = { x: 0, y: 0 };
 let currentPieceName;
 let lastMoveDownTime = 0;
 let score = 0;
 let move_game_speed = BASE_MOVE_GAME_SPEED;
+
+function initializeBoard(){
+    return Array(BOARD_HEIGHT).fill().map(() => Array(BOARD_WIDTH).fill(0));
+}
+
+function resetGame(timestamp, ctx) {
+    board = initializeBoard();
+    currentPiece = null;
+    currentPiecePosition = { x: Math.floor(BOARD_WIDTH / 2), y: 0 };
+    lastMoveDownTime = 0;
+    move_game_speed = BASE_MOVE_GAME_SPEED;
+    score = 0;
+
+    createNewPiece();
+    lastMoveDownTime = timestamp;
+    drawBoard(ctx);
+    drawPiece(ctx);
+    requestAnimationFrame(gameLoop);
+}
 
 function createNewPiece() {
     const shapes = Object.keys(TETROMINOES);
@@ -86,6 +107,10 @@ function drawPiece(ctx) {
 }
 
 function isValidMove(piece, position) {
+    if (!piece) {
+        console.log("Invalid piece passed to isValidMove:", piece);
+        return false;
+    }
     for (let y = 0; y < piece.length; y++) {
         for (let x = 0; x < piece[y].length; x++) {
             if (piece[y][x]) {
@@ -102,11 +127,13 @@ function isValidMove(piece, position) {
 // SOUND FX
 function playSoundMovement() {
     const movementSound = document.getElementById('movement');
+    movementSound.volume = sound_volume;
     movementSound.currentTime = 0;
     movementSound.play();
 }
 function playSoundHardDrop() {
     const harddrop = document.getElementById('harddrop');
+    harddrop.volume = sound_volume;
     harddrop.currentTime = 0;
     harddrop.play();
 }
@@ -125,6 +152,7 @@ function playSoundLineCompleted(amountOfLines) {
         else if (amountOfLines == 4) {
             lineCompleted = document.getElementById('lineCompleted4');
         }
+        lineCompleted.volume = sound_volume;
         lineCompleted.currentTime = 0;
         lineCompleted.play();
     }
@@ -200,7 +228,7 @@ function clearLines() {
 
 function updateLogs() {
     document.getElementById('score').innerText = score
-    document.getElementById('speed').innerText = move_game_speed
+    document.getElementById('speed').innerText = move_game_speed    
 }
 
 function gameLoop(timestamp) {
@@ -218,8 +246,11 @@ function gameLoop(timestamp) {
             clearLines();
             createNewPiece();
             if (!isValidMove(currentPiece, currentPiecePosition)) {
-                // alert("Game Over!");
-                return;
+                alert("Game Over!");
+
+                // INITIALIZE GAME
+                resetGame(timestamp, ctx);
+                
             }
         }
         lastMoveDownTime = timestamp;
@@ -243,8 +274,6 @@ document.addEventListener('keydown', (event) => {
         case 'ArrowRight': movePiece(1, 0); playSoundMovement(); break;
         case 'ArrowDown': movePiece(0, 1); playSoundMovement(); break;
         case 'ArrowUp': rotatePiece(); playSoundMovement(); break;
-        case ' ': movePiceAllDown(); playSoundHardDrop(); break; // es la barra espaciadora CUALQUIERAAAAAA
+        case ' ': movePiceAllDown(); playSoundHardDrop(); break; // ' ' es la barra espaciadora CUALQUIERAAAAAA
     }
 });
-
-gameLoop();
