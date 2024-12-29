@@ -11,7 +11,17 @@
     <div class="container">
         <h1 class="game-title">TETRIS</h1>
         <div class="game-area">
+
             <canvas id="canvasMap" width="300" height="600"></canvas>
+            <h1 id="paused-message">PAUSED</h1>
+            <div id="menu">
+                <h1 class="option-menu" id="play">PLAY</h1>
+                <h2 class="option-menu" id="leadboards">VIEW LEADBOARDS</h2>
+            </div>
+            <div id="menu-gameover">
+                <h1>GAME OVER</h1>
+                <h2 class="option-menu" id="restart">RESTART</h2>
+            </div>
             <div class="info-panel">
                 <div class="score-box">
                     <h2>SCORE</h2>
@@ -27,6 +37,7 @@
                     <p>↑ : Rotate</p>
                     <p>↓ : Soft Drop</p>
                     <p>Space : Hard Drop</p>
+                    <p>ESC : Pause</p>
                 </div>
             </div>
         </div>
@@ -53,9 +64,19 @@
     <audio id=lineCompleted4>
         <source src='./soundfx/harddown2Line4.wav'>
     </audio>
+    <audio id=pause>
+        <source src='./soundfx/pause.wav'/>
+    </audio>
+    <audio id=unpause>
+        <source src='./soundfx/unpause.wav'/>
+    </audio>
 
 
     <script src="./TetrisStyling.js"></script>
     <script src="./game.js"></script>
+    <script src="./gamelogic/sound-fx.js"></script>
+    <script src="./gamelogic/gameloop.js"></script>
+    <script src="./gamelogic/settings.js"></script>
+    <script src="./gamelogic/input.js"></script>
 </body>
 </html>

@@ -24,7 +24,49 @@ body {
     display: flex;
     justify-content: center;
     gap: 40px;
+    position: relative;
 }
+
+/* FOR PAUSE MENU */
+@keyframes pauseMenu {
+    0% { opacity: 1; }
+    40% { opacity: 0; }
+    60% { opacity: 0; }
+    100% { opacity: 1; }
+  }
+#paused-message{
+    display: none;
+    position: absolute;
+    top: 35%;
+    left: 11%;
+    animation: pauseMenu 1.4s steps(1, end) infinite;
+}
+#menu{
+    display: inline;
+    position: absolute;
+    top: 35%;
+    left: 4%;
+    color:white
+}
+
+#menu-gameover{
+    display: none;
+    position: absolute;
+    top: 35%;
+    left: 2%;
+    color:white
+}
+
+.option-menu{
+    color:white;
+    cursor: pointer;
+}
+.option-menu:hover{
+    animation: pauseMenu 0.7s steps(1, end) infinite;
+}
+
+
+
 
 #canvasMap {
     background-color: #0f3460;
