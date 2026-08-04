@@ -44,7 +44,7 @@ document.addEventListener('keydown', (event) => {
         case 'ArrowRight': movePiece(1, 0); playSoundMovement(); break;
         case 'ArrowDown': movePiece(0, 1); playSoundMovement(); break;
         case 'ArrowUp': rotatePiece(); playSoundMovement(); break;
-        case ' ': movePiceAllDown(); playSoundHardDrop(); break; // ' ' es la barra espaciadora CUALQUIERAAAAAA
+        case ' ': movePiceAllDown(); playSoundHardDrop(); break; // ' ' es la barra espaciadora 
         case 'Escape': pauseGame(); break;
     }
 });
